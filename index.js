@@ -12,6 +12,42 @@ class NodeTree{
     buildTree(arr){
         this.root = binarySearch(0, arr.length-1, arr)
     }
+    insert(val){
+        const newNode = new Node(val);
+
+        if(this.root === null) this.root = newNode;
+        else{
+            this.insertNode(this.root, newNode);
+        }  
+    }
+    insertNode(node, newNode){
+        if(newNode.data < node.data){
+            if(node.left === null){
+                node.left = newNode;
+            } else{
+                this.insertNode(node.left, newNode)
+            }
+        } else{
+            if(node.right === null){
+                node.right = newNode;
+            } else{
+                this.insertNode(node.right, newNode)
+            }
+        }
+    }
+}
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
 }
 
 function sort(arr){
@@ -38,6 +74,16 @@ arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 arr = sort(arr);
 arr = removeDuplicates(arr);
 nodeTree = new NodeTree();
-nodeTree.buildTree(arr);
-console.log(nodeTree.root)
-console.log(nodeTree) 
+// nodeTree.buildTree(arr);
+
+console.log(prettyPrint(nodeTree.root))
+nodeTree.insert(50);
+nodeTree.insert(30);
+
+nodeTree.insert(20);
+nodeTree.insert(40);
+nodeTree.insert(70);
+nodeTree.insert(60);
+nodeTree.insert(80);
+
+console.log(prettyPrint(nodeTree.root))

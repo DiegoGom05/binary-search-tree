@@ -35,6 +35,41 @@ class NodeTree{
             }
         }
     }
+    find(value, node){ 
+        if(node  !== null){
+            this.find(value, node.left)
+            if(value === node.data){
+                console.log(node)
+            }
+            this.find(value, node.right)
+        }
+    }
+    levelOrder(callback = null, root){
+        if (root === null) {
+            return [];
+        }
+    
+        const queue = [];  
+        const result = [];  
+    
+        queue.push(root);
+
+        while(queue.length > 0){
+            const currentNode = queue.shift();
+            if(callback !== null){
+                callback(currentNode.data);
+            } else{
+                result.push(currentNode.data);
+            }
+
+            if(currentNode.left !== null){
+                queue.push(currentNode.left);
+            } 
+            if(currentNode.right !== null){
+                queue.push(currentNode.right);
+            }
+        }
+    }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -76,7 +111,7 @@ arr = removeDuplicates(arr);
 nodeTree = new NodeTree();
 // nodeTree.buildTree(arr);
 
-console.log(prettyPrint(nodeTree.root))
+// console.log(prettyPrint(nodeTree.root))
 nodeTree.insert(50);
 nodeTree.insert(30);
 
@@ -86,4 +121,5 @@ nodeTree.insert(70);
 nodeTree.insert(60);
 nodeTree.insert(80);
 
+nodeTree.levelOrder((data) => console.log(data), nodeTree.root);
 console.log(prettyPrint(nodeTree.root))
